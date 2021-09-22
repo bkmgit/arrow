@@ -17,6 +17,8 @@
 
 ADD_ARROW_EXAMPLE(row_wise_conversion_example)
 
+ADD_ARROW_EXAMPLE(error_report_result)
+
 if (ARROW_COMPUTE)
   ADD_ARROW_EXAMPLE(compute_register_example)
 endif()
