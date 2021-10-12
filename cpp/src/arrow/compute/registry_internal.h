@@ -30,7 +30,6 @@ void RegisterScalarBetween(FunctionRegistry* registry);
 void RegisterScalarBoolean(FunctionRegistry* registry);
 void RegisterScalarCast(FunctionRegistry* registry);
 void RegisterScalarComparison(FunctionRegistry* registry);
-void RegisterScalarFillNull(FunctionRegistry* registry);
 void RegisterScalarIfElse(FunctionRegistry* registry);
 void RegisterScalarNested(FunctionRegistry* registry);
 void RegisterScalarSetLookup(FunctionRegistry* registry);
@@ -38,9 +37,6 @@ void RegisterScalarStringAscii(FunctionRegistry* registry);
 void RegisterScalarTemporalBinary(FunctionRegistry* registry);
 void RegisterScalarTemporalUnary(FunctionRegistry* registry);
 void RegisterScalarValidity(FunctionRegistry* registry);
-void RegisterScalarIfElse(FunctionRegistry* registry);
-void RegisterScalarTemporalBinary(FunctionRegistry* registry);
-void RegisterScalarTemporalUnary(FunctionRegistry* registry);
 
 void RegisterScalarOptions(FunctionRegistry* registry);
 
