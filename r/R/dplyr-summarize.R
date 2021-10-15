@@ -96,6 +96,19 @@ do_arrow_summarize <- function(.data, ..., .groups = NULL) {
     )[c(.data$group_by_vars, names(exprs))]
   }
 
+  # If the object has .drop = FALSE and any group vars are dictionaries,
+  # we can't (currently) preserve the empty rows that dplyr does,
+  # so give a warning about that.
+  if (!dplyr::group_by_drop_default(.data)) {
+    group_by_exprs <- .data$selected_columns[.data$group_by_vars]
+    if (any(map_lgl(group_by_exprs, ~ inherits(.$type(), "DictionaryType")))) {
+      warning(
+        ".drop = FALSE currently not supported in Arrow aggregation",
+        call. = FALSE
+      )
+    }
+  }
+
   # Handle .groups argument
   if (length(.data$group_by_vars)) {
     if (is.null(.groups)) {
@@ -116,9 +129,10 @@ do_arrow_summarize <- function(.data, ..., .groups = NULL) {
       out$group_by_vars <- .data$group_by_vars
     } else if (.groups == "rowwise") {
       stop(arrow_not_supported('.groups = "rowwise"'))
-    } else if (.groups != "drop") {
-      # Drop means don't group by anything so there's nothing to do.
-      # Anything else is invalid
+    } else if (.groups == "drop") {
+      # collapse() preserves groups so remove them
+      out <- dplyr::ungroup(out)
+    } else {
       stop(paste("Invalid .groups argument:", .groups))
     }
     # TODO: shouldn't we be doing something with `drop_empty_groups` in summarize? (ARROW-14044)
