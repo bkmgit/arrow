@@ -810,8 +810,7 @@ struct BetweenTimestamps : public ScalarTernaryEqualTypes<OutType, ArgType, Op> 
     if ((var.timezone().empty() != lhs.timezone().empty()) ||
         (var.timezone().empty() != rhs.timezone().empty()) ||
         (lhs.timezone().empty() != rhs.timezone().empty())) {
-      return Status::Invalid(
-          "Cannot compare timestamps with and without timezones.");
+      return Status::Invalid("Cannot compare timestamps with and without timezones.");
     }
     return Base::Exec(ctx, batch, out);
   }
@@ -904,40 +903,40 @@ const FunctionDoc between_doc{"Check if values are in a range, val betwen a and 
                               {"val", "a", "b"}};
 
 class BetweenMetaFunction : public MetaFunction {
-  public:
-   BetweenMetaFunction()
+ public:
+  BetweenMetaFunction()
       : MetaFunction("between", Arity::Ternary(), &between_doc,
-		      GetDefaultBetweenOptions()) {}
+                     GetDefaultBetweenOptions()) {}
 
-   Result<Datum> ExecuteImpl(const std::vector<Datum>& args,
-                             const FunctionOptions* options,
-			     ExecContext* ctx) const override {
-   const BetweenOptions& between_options = static_cast<const BetweenOptions&>(*options);
-   Datum result;
-   switch (between_options.inclusiveness) {
-     case BetweenOptions::Inclusiveness::BOTH: {
-       ARROW_ASSIGN_OR_RAISE(result, 
-                             CallFunction("between_inclusive_both", args, ctx));
-       break;
-     }
-     case BetweenOptions::Inclusiveness::LEFT: {
-       ARROW_ASSIGN_OR_RAISE(result,
-                             CallFunction("between_inclusive_left", args, ctx));
-       break;
-     }
-     case BetweenOptions::Inclusiveness::RIGHT: {
-       ARROW_ASSIGN_OR_RAISE(result,
-                             CallFunction("between_inclusive_right", args, ctx));
-       break;
-     }
-     case BetweenOptions::Inclusiveness::NEITHER: {
-       ARROW_ASSIGN_OR_RAISE(result,
-                             CallFunction("between_inclusive_neither", args, ctx));
-       break;
-     }
-   }
-  return result;
- }
+  Result<Datum> ExecuteImpl(const std::vector<Datum>& args,
+                            const FunctionOptions* options,
+                            ExecContext* ctx) const override {
+    const BetweenOptions& between_options = static_cast<const BetweenOptions&>(*options);
+    Datum result;
+    switch (between_options.inclusiveness) {
+      case BetweenOptions::Inclusiveness::BOTH: {
+        ARROW_ASSIGN_OR_RAISE(result, 
+                              CallFunction("between_inclusive_both", args, ctx));
+        break;
+      }
+      case BetweenOptions::Inclusiveness::LEFT: {
+        ARROW_ASSIGN_OR_RAISE(result,
+                              CallFunction("between_inclusive_left", args, ctx));
+        break;
+      }
+      case BetweenOptions::Inclusiveness::RIGHT: {
+        ARROW_ASSIGN_OR_RAISE(result,
+                              CallFunction("between_inclusive_right", args, ctx));
+        break;
+      }
+      case BetweenOptions::Inclusiveness::NEITHER: {
+        ARROW_ASSIGN_OR_RAISE(result,
+                              CallFunction("between_inclusive_neither", args, ctx));
+        break;
+      }
+    }
+    return result;
+  }
 };
 
 const FunctionDoc equal_doc{"Compare values for equality (x == y)",
