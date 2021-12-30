@@ -915,18 +915,15 @@ class BetweenMetaFunction : public MetaFunction {
     Datum result;
     switch (between_options.inclusiveness) {
       case BetweenOptions::Inclusiveness::BOTH: {
-        ARROW_ASSIGN_OR_RAISE(result, 
-                              CallFunction("between_inclusive_both", args, ctx));
+        ARROW_ASSIGN_OR_RAISE(result, CallFunction("between_inclusive_both", args, ctx));
         break;
       }
       case BetweenOptions::Inclusiveness::LEFT: {
-        ARROW_ASSIGN_OR_RAISE(result,
-                              CallFunction("between_inclusive_left", args, ctx));
+        ARROW_ASSIGN_OR_RAISE(result, CallFunction("between_inclusive_left", args, ctx));
         break;
       }
       case BetweenOptions::Inclusiveness::RIGHT: {
-        ARROW_ASSIGN_OR_RAISE(result,
-                              CallFunction("between_inclusive_right", args, ctx));
+        ARROW_ASSIGN_OR_RAISE(result, CallFunction("between_inclusive_right", args, ctx));
         break;
       }
       case BetweenOptions::Inclusiveness::NEITHER: {
